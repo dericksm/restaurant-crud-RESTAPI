@@ -7,8 +7,12 @@ const restaurant = require('./routes/restaurant')
 const users = require('./routes/users');
 const bodyParser = require('body-parser')
 const mongoose = require('./config/database')
+const cors = require('cors')
 var jwt = require('jsonwebtoken')
 const app = express()
+app.use(cors({
+  origin: 'http://localhost:4200'
+}));
 
 app.set('secretKey', 'CRUDUNESC')
 
@@ -21,7 +25,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', function(req, res){
-res.json({"tutorial" : "Crud Rest API"})
+  res.json({"tutorial" : "Crud Rest API"})
 })
 
 // public route
@@ -50,12 +54,6 @@ function validateUser(req, res, next) {
   
 }
 
-app.use(function(req, res, next) {
-	let err = new Error('Not Found')
-    err.status = 404
-    next(err)
-})
-
 // handle errors
 app.use(function(err, req, res, next) {
 	console.log(err)
@@ -66,6 +64,7 @@ app.use(function(err, req, res, next) {
     res.status(500).json({message: "Something looks wrong"})
 
 })
+
 
 app.listen(3000, function(){
 	console.log('Node server listening on port 3000')

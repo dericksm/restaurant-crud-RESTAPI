@@ -1,11 +1,10 @@
 const userModel = require('../models/users');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
 	create: async function (req, res, next) {
 		let checkUser = await userModel.findOne({ "name": req.body.name })
-		console.log(checkUser)
+		console.log(req)
 		if (checkUser != null) {
 			res.status(400).json({status: "fail", message: "User already exists", data: null});
 		} else {
@@ -40,6 +39,44 @@ module.exports = {
 					res.status(400).json({ status: "error", message: "Invalid email/password", data: null });
 
 				}
+			}
+		});
+	},
+	getAll: async function (req, res, next) {
+		let n = parseInt(req.query.limit)
+
+		let users = await userModel.find({}).limit(n)
+
+		if(req.query.date) {
+			 users = await userModel.find({"date": req.query.date}).limit(n)
+		} else {
+			 users = await userModel.find({}).limit(n)
+		}
+		
+		if (users) {
+			res.status(200).json({ status: "Success", message: "Data found", users });
+		} else {
+			next(err);
+		}
+	},
+
+	updateById: function (req, res, next) {
+		userModel.findByIdAndUpdate(req.params.id, { name: req.body.name }, function (err, restaurant) {
+			if (err)
+				next(err);
+			else {
+				res.status(200).json({ status: "Success", message: "Data updated", data: null });
+			}
+		});
+	},
+
+	deleteById: function (req, res, next) {
+		console.log(req.query.id)
+		userModel.findByIdAndRemove(req.query.id, function (err, restaurant) {
+			if (err)
+				next(err);
+			else {
+				res.status(200).json({ status: "Success", message: "Data deleted", data: null });
 			}
 		});
 	},
