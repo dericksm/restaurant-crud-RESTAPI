@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema({
-	item: String,
+	name: String,
 	quantity: Number,
-	total: Number,
-	user: String
+	price: Number,
+	restaurantId: String
 });
 
 module.exports = mongoose.model('Order', OrderSchema)

@@ -4,11 +4,9 @@ const jwt = require('jsonwebtoken');
 module.exports = {
 	create: async function (req, res, next) {
 		let checkUser = await userModel.findOne({ "name": req.body.name })
-		console.log(req)
 		if (checkUser != null) {
 			res.status(400).json({status: "fail", message: "User already exists", data: null});
 		} else {
-			console.log(req.body)
 			userModel.create({ name: req.body.name, email: req.body.email, password: req.body.password }, function (err, result) {
 				if (err)
 					next(err);
@@ -61,7 +59,7 @@ module.exports = {
 	},
 
 	updateById: function (req, res, next) {
-		userModel.findByIdAndUpdate(req.params.id, { name: req.body.name }, function (err, restaurant) {
+		userModel.findByIdAndUpdate(req.body.id, { name: req.body.name }, function (err, restaurant) {
 			if (err)
 				next(err);
 			else {
@@ -71,8 +69,7 @@ module.exports = {
 	},
 
 	deleteById: function (req, res, next) {
-		console.log(req.query.id)
-		userModel.findByIdAndRemove(req.query.id, function (err, restaurant) {
+		userModel.findByIdAndRemove(req.body.id, function (err, restaurant) {
 			if (err)
 				next(err);
 			else {

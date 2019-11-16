@@ -3,7 +3,6 @@ const orderModel = require('../models/order');
 
 module.exports = {
 	getById: function (req, res, next) {
-		console.log(req.body);
 		orderModel.findById(req.params.id, function (err, orderInfo) {
 			if (err) {
 				next(err);

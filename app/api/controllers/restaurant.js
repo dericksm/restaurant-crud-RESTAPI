@@ -3,12 +3,22 @@ const restaurantModel = require('../models/restaurant');
 
 module.exports = {
 	getById: function (req, res, next) {
-		console.log(req.body);
 		restaurantModel.findById(req.params.id, function (err, restaurant) {
 			if (err) {
 				next(err);
 			} else {
 				res.status(200).json({ status: "Success", message: "Data found", data: { movies: restaurant } });
+			}
+		});
+	},
+
+	getByName: function (req, res, next) {
+		console.log(req.params.name)
+				restaurantModel.findOne({"name": req.params.name}, function (err, restaurant) {
+			if (err) {
+				next(err);
+			} else {
+				res.status(200).json({ status: "Success", message: "Data found", data: { restaurant: restaurant } });
 			}
 		});
 	},
@@ -23,7 +33,6 @@ module.exports = {
 		}
 
 
-			console.log(restaurants)
 			if (restaurants) {
 				res.status(200).json({ status: "Success", message: "Data found", restaurants });
 			} else {

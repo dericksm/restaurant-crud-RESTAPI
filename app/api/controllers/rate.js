@@ -3,7 +3,6 @@ const rateModel = require('../models/rate');
 
 module.exports = {
 	getById: function (req, res, next) {
-		console.log(req.body);
 		rateModel.findById(req.params.id, function (err, rateInfo) {
 			if (err) {
 				next(err);
